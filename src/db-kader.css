@@ -1,17 +1,14 @@
 /* =========================================================
-   CSS DASHBOARD KADER (FLEXBOX & GRID SESUAI DESAIN)
+   CSS DASHBOARD KADER (db-kader.css)
    ========================================================= */
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Plus Jakarta Sans", "Poppins", sans-serif;
-}
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
-  background-color: #f0f5ed; /* Warna latar belakang hijau sangat muda sesuai gambar */
+  background-color: #f0f5ed;
   min-height: 100vh;
+  font-family: "Plus Jakarta Sans", "Poppins", sans-serif;
 }
 
 /* --- NAVBAR --- */
@@ -32,7 +29,7 @@ body {
   height: 70px;
   max-width: 1440px;
   margin: 0 auto;
-  position: relative; /* Penting untuk navigasi tengah */
+  position: relative;
 }
 
 .brand {
@@ -45,7 +42,6 @@ body {
   object-fit: contain;
 }
 
-/* Trik agar navigasi berada persis di tengah layar */
 .nav-links {
   position: absolute;
   left: 50%;
@@ -62,6 +58,11 @@ body {
   color: #3f4940;
   font-weight: 500;
   padding-bottom: 4px;
+  transition: color 0.2s;
+}
+
+.nav-item:hover {
+  color: #006a38;
 }
 
 .nav-item.active {
@@ -94,6 +95,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .header-titles h1 {
@@ -135,7 +138,7 @@ body {
 /* SUMMARY CARDS GRID */
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
 }
 
@@ -148,9 +151,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Kotak pertama memiliki pinggiran hijau kiri sesuai gambar */
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 .summary-card.active-card {
   border-left: 4px solid #006a38;
 }
@@ -175,6 +183,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .icon-wrapper.total { background: #e8f5e9; }
 .icon-wrapper.baik { background: #e8f5e9; }
 .icon-wrapper.kurang { background: #fff8e1; }
@@ -188,11 +197,17 @@ body {
   line-height: 1;
 }
 
-/* CHARTS AREA (Grid 2:1 -> Kiri Lebih Lebar) */
+/* CHARTS AREA */
 .charts-area {
   display: grid;
-  grid-template-columns: 2.2fr 1fr; /* Proporsi Trend lebih lebar dari Donut */
+  grid-template-columns: 2.2fr 1fr;
   gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .charts-area {
+    grid-template-columns: 1fr;
+  }
 }
 
 .chart-card {
@@ -210,12 +225,13 @@ body {
   margin-bottom: 24px;
 }
 
-/* TREND CHART (KIRI) */
 .trend-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .trend-header h3 {
@@ -239,12 +255,25 @@ body {
   gap: 6px;
 }
 
-.trend-graph-placeholder {
-  height: 220px;
-  width: 100%;
+.badge-red {
+  background: #fee2e2;
+  color: #e53935;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* DONUT CHART (KANAN) */
+.trend-graph-placeholder {
+  height: 250px;
+  width: 100%;
+  position: relative;
+}
+
+/* DONUT CHART */
 .donut-chart-container {
   display: flex;
   flex-direction: column;
@@ -256,14 +285,11 @@ body {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: conic-gradient(
-    #3c9a5f 0% 79%,
-    #fdb813 79% 91%,
-    #e53935 91% 100%
-  );
+  background: conic-gradient(#e2e8f0 0% 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.5s ease;
 }
 
 .donut-inner {
@@ -305,6 +331,7 @@ body {
   height: 12px;
   border-radius: 50%;
   margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .legend-text { flex: 1; font-size: 14px; color: #64748b; }
@@ -324,6 +351,8 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .table-title-group {
@@ -337,6 +366,13 @@ body {
   height: 12px;
   background-color: #e53935;
   border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(229, 57, 53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
 }
 
 .table-header h2 {
@@ -353,6 +389,11 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.link-action:hover {
+  opacity: 0.8;
 }
 
 .table-responsive {
@@ -371,6 +412,8 @@ body {
   padding: 16px;
   text-align: left;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .data-table td {
@@ -381,9 +424,8 @@ body {
   border-bottom: 1px solid #f8fafc;
 }
 
-/* Hilangkan background selang-seling jika desainnya bersih putih semua */
-.data-table tr {
-  background: #ffffff;
+.data-table tr:hover {
+  background-color: #f8fafc;
 }
 
 .user-cell {
@@ -392,9 +434,9 @@ body {
   gap: 12px;
 }
 
-.avatar-green { background: #98f7b3; color: #006a38; }
-.avatar-yellow { background: #ffddb3; color: #825500; }
-.avatar-red { background: #ffdad6; color: #e53935; }
+.avatar-green { background: #dcfce7; color: #166534; }
+.avatar-yellow { background: #fef3c7; color: #92400e; }
+.avatar-red { background: #fee2e2; color: #991b1b; }
 
 .avatar-green, .avatar-yellow, .avatar-red {
   width: 36px;
@@ -405,11 +447,10 @@ body {
   justify-content: center;
   font-weight: 700;
   font-size: 12px;
+  flex-shrink: 0;
 }
 
-.badge-red {
-  background: #fee2e2;
-  color: #e53935;
+.badge-status {
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
@@ -418,7 +459,12 @@ body {
   align-items: center;
 }
 
-.badge-red::before {
+.badge-status.red {
+  background: #fee2e2;
+  color: #e53935;
+}
+
+.badge-status.red::before {
   content: "";
   display: inline-block;
   width: 6px;
@@ -428,15 +474,35 @@ body {
   margin-right: 6px;
 }
 
+.badge-status.yellow {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.badge-status.yellow::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #d97706;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
 .btn-danger {
   background: #e53935;
   color: #ffffff;
   border: none;
-  padding: 8px 20px;
+  padding: 8px 16px;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   line-height: 1.4;
   text-align: center;
+  transition: background 0.2s;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
 }

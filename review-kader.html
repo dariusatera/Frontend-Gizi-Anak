@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tinjauan Data Kader - NutriTumbuh</title>
   
-  <!-- 1. TAMBAHKAN 3 BARIS INI UNTUK MENGAMBIL FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Panggil CSS Global dan Khusus -->
   <link rel="stylesheet" href="/src/globals.css">
   <link rel="stylesheet" href="/src/review-kader.css">
 </head>
@@ -18,23 +16,19 @@
   <div class="kader-page">
     <div class="kader-card">
       
-      <!-- HEADER HIJAU -->
       <div class="kader-header">
-        <img class="logo" src="img/NutrisiTumbuh-Logo.png" alt="Logo NutriTumbuh">
+        <img class="logo" src="/img/NutrisiTumbuh-Logo.png" alt="Logo NutriTumbuh">
         <h1 class="title">Informasi Data Diri Kader Posyandu</h1>
         <p class="subtitle">Tinjau dan Konfirmasi Data Anda</p>
         
-        <!-- STEPPER (Step 2 Aktif) -->
         <div class="stepper-container">
           <div class="stepper-line"></div>
           <div class="stepper-steps">
             <div class="step">
-              <!-- Step 1 sekarang selesai / tidak aktif -->
               <div class="circle">1</div>
               <div class="step-text">Data Diri<br>Kader</div>
             </div>
             <div class="step">
-              <!-- Step 2 sekarang aktif -->
               <div class="circle active">2</div>
               <div class="step-text active-text">Tinjauan</div>
             </div>
@@ -42,51 +36,111 @@
         </div>
       </div>
 
-      <!-- BODY PUTIH DENGAN GARIS HIJAU KIRI -->
       <div class="review-body">
         
-        <!-- JUDUL SECTION & TOMBOL UBAH -->
         <div class="review-section-header">
           <div class="section-title">
             <div class="icon-circle">
-              <img src="img/icon-user-dark.png" alt="User">
+              <img src="/img/icon-user-dark.png" alt="User">
             </div>
-            <h2>Data Diri Pengguna / Wali</h2>
+            <h2>Data Diri Kader</h2>
           </div>
           <a href="/data-kader.html" class="btn-edit">
-            <img src="img/icon-edit.png" alt="Edit"> Ubah Data Diri
+            <img src="/img/icon-edit.png" alt="Edit"> Ubah Data Diri
           </a>
         </div>
 
-        <!-- DAFTAR DATA -->
+        <!-- TAMBAHKAN ID PADA SETIAP DATA-VALUE -->
         <div class="data-list">
           <div class="data-row">
             <span class="data-label">Nama Lengkap</span>
-            <span class="data-value">Siti Khoiriyah</span>
+            <span class="data-value" id="review-nama">-</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Nomor Induk Pegawai</span>
+            <span class="data-value" id="review-nip">-</span>
           </div>
           <div class="data-row highlight">
             <span class="data-label">Tanggal Lahir</span>
-            <span class="data-value">14 Maret 1986 (38 Tahun)</span>
+            <span class="data-value" id="review-tgl">-</span>
           </div>
           <div class="data-row highlight">
             <span class="data-label">Alamat Tinggal</span>
-            <span class="data-value">Jl. Merdeka No. 47, Dusun Sukamaju, RT 02 / RW<br>03, Desa Sejahtera</span>
+            <span class="data-value" id="review-alamat">-</span>
           </div>
         </div>
 
-        <!-- TOMBOL AKSI BAWAH -->
         <div class="review-action-footer">
           <a href="/data-kader.html" class="btn-back">
-            <img src="img/icon-arrow-left.png" alt="Kembali"> Kembali
+            <img src="/img/icon-arrow-left.png" alt="Kembali"> Kembali
           </a>
-          <button type="submit" class="btn-submit">
-            Lanjutkan <img src="img/icon-arrow-right.png" alt="Lanjut">
+          <!-- Tombol ini nanti akan mengirim data ke backend -->
+          <button type="button" id="btn-final-submit" class="btn-submit">
+            Simpan & Lanjutkan <img src="/img/icon-arrow-right.png" alt="Lanjut">
           </button>
         </div>
         
-
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Ambil data dari sessionStorage
+      const storedData = sessionStorage.getItem('kaderData');
+      
+      if (!storedData) {
+        alert('Data tidak ditemukan. Silakan isi formulir terlebih dahulu.');
+        window.location.href = '/data-kader.html';
+        return;
+      }
+
+      const data = JSON.parse(storedData);
+
+      // 2. Tampilkan data ke HTML Review
+      document.getElementById('review-nama').textContent = data.nama;
+      document.getElementById('review-nip').textContent = data.nip;
+      
+      // Format Tanggal Lahir dan Hitung Umur Otomatis
+      const dateObj = new Date(data.tglLahir);
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const formattedDate = dateObj.toLocaleDateString('id-ID', options);
+      
+      const today = new Date();
+      let age = today.getFullYear() - dateObj.getFullYear();
+      const monthDiff = today.getMonth() - dateObj.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateObj.getDate())) {
+        age--;
+      }
+      
+      document.getElementById('review-tgl').textContent = `${formattedDate} (${age} Tahun)`;
+      document.getElementById('review-alamat').innerHTML = data.alamat.replace(/\n/g, '<br>');
+
+      // 3. Handle Tombol "Simpan & Lanjutkan" -> Redirect ke Dashboard
+      const btnSubmit = document.getElementById('btn-final-submit');
+      
+      btnSubmit.addEventListener('click', () => {
+        // Simulasi proses loading agar terasa seperti sedang menghubungi backend
+        const originalText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = 'Menyimpan data...';
+        btnSubmit.disabled = true;
+        btnSubmit.style.opacity = '0.7';
+
+        setTimeout(() => {
+          // Simpan nama ke sessionStorage khusus untuk sapaan di Dashboard
+          sessionStorage.setItem('currentUser', JSON.stringify({ 
+            nama: data.nama, 
+            role: 'kader' 
+          }));
+
+          // Hapus data form sementara karena sudah "disimpan"
+          sessionStorage.removeItem('kaderData');
+
+          // Redirect ke Dashboard Kader
+          window.location.href = '/db-kader.html';
+        }, 1200); // Delay 1.2 detik untuk efek realistik
+      });
+    });
+  </script>
 </body>
 </html>

@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Informasi Data Diri Kader - NutriTumbuh</title>
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Panggil CSS -->
   <link rel="stylesheet" href="/src/globals.css">
   <link rel="stylesheet" href="/src/data-kader.css">
 </head>
@@ -18,13 +16,11 @@
   <div class="kader-page">
     <div class="kader-card">
       
-      <!-- HEADER HIJAU -->
       <div class="kader-header">
         <img class="logo" src="/img/NutrisiTumbuh-Logo.png" alt="Logo NutriTumbuh">
         <h1 class="title">Informasi Data Diri Kader Posyandu</h1>
         <p class="subtitle">Mohon masukkan data diri sesuai yang diperintahkan</p>
         
-        <!-- STEPPER -->
         <div class="stepper-container">
           <div class="stepper-line"></div>
           <div class="stepper-steps">
@@ -40,48 +36,43 @@
         </div>
       </div>
 
-      <!-- FORM PUTIH DENGAN ACTION KE REVIEW-KADER.HTML -->
-      <form class="kader-form" action="/review-kader.html" method="get">
+      <!-- Hapus action & method, kita handle pakai JavaScript -->
+      <form class="kader-form" id="form-data-kader">
         
-        <!-- NAMA LENGKAP -->
         <div class="input-group">
           <label class="input-label">Nama Lengkap <span class="required">*</span></label>
           <div class="input-box">
             <img class="input-icon" src="/img/orang.png" alt="User">
-            <input type="text" placeholder="Tekan untuk mengisi nama lengkap" required>
+            <!-- TAMBAHKAN id dan name -->
+            <input type="text" id="nama" name="nama" placeholder="Tekan untuk mengisi nama lengkap" required>
           </div>
           <span class="helper-text">Sesuai dengan yang ada di dokumen resmi anda</span>
         </div>
 
-        <!-- NOMOR INDUK PEGAWAI -->
         <div class="input-group">
           <label class="input-label">Nomor Induk Pegawai <span class="required">*</span></label>
           <div class="input-box">
             <img class="input-icon" src="/img/orang.png" alt="ID">
-            <input type="text" placeholder="Tekan untuk memasukkan nomor id" required>
+            <input type="text" id="nip" name="nip" placeholder="Tekan untuk memasukkan nomor id" required>
           </div>
         </div>
 
-        <!-- DATE OF BIRTH -->
         <div class="input-group">
           <label class="input-label">Date of Birth <span class="required">*</span></label>
           <div class="input-box">
             <img class="input-icon" src="/img/tgl.png" alt="Calendar">
-            <!-- Pakai type="date" agar muncul kalender asli saat diklik -->
-            <input type="date" required>
+            <input type="date" id="tglLahir" name="tglLahir" required>
           </div>
         </div>
 
-        <!-- ALAMAT -->
         <div class="input-group">
           <label class="input-label">Alamat Tempat Tinggal <span class="required">*</span></label>
           <div class="input-box textarea-box">
             <img class="input-icon" src="/img/icon-location.png" alt="Location">
-            <textarea placeholder="Masukkan alamat, Rt/Rw, Kecamatan, Kelurahan, Kota" required></textarea>
+            <textarea id="alamat" name="alamat" placeholder="Masukkan alamat, Rt/Rw, Kecamatan, Kelurahan, Kota" required></textarea>
           </div>
         </div>
 
-        <!-- TOMBOL LANJUTKAN -->
         <div class="form-action">
           <button type="submit" class="btn-submit">
             Lanjutkan <img src="/img/icon-arrow-right.png" alt="Arrow">
@@ -91,5 +82,26 @@
       </form>
     </div>
   </div>
+
+  <script>
+    // Tangkap event submit form
+    document.getElementById('form-data-kader').addEventListener('submit', function(e) {
+      e.preventDefault(); // Mencegah reload halaman
+      
+      // 1. Ambil data dari input berdasarkan ID
+      const formData = {
+        nama: document.getElementById('nama').value,
+        nip: document.getElementById('nip').value,
+        tglLahir: document.getElementById('tglLahir').value,
+        alamat: document.getElementById('alamat').value
+      };
+
+      // 2. Simpan ke sessionStorage sebagai string JSON
+      sessionStorage.setItem('kaderData', JSON.stringify(formData));
+
+      // 3. Redirect ke halaman review
+      window.location.href = '/review-kader.html';
+    });
+  </script>
 </body>
 </html>
