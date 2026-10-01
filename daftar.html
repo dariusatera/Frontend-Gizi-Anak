@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="description" content="Formulir pendaftaran akun NutriTumbuh">
+<title>Daftar Akun NutriTumbuh</title>
+<link rel="stylesheet" href="/src/globals.css">
+<link rel="stylesheet" href="/src/styleguide.css">
+<link rel="stylesheet" href="/src/daftar.css">
+</head>
+<body>
+<main class="daftar">
+<section class="form-daftar" aria-labelledby="welcome-title">
+<div class="container">
+<img
+          class="whatsapp-image"
+          src="img/NutrisiTumbuh-Logo.png"
+          alt="Logo NutriTumbuh"
+        >
+<header class="desktop-welcome">
+<div class="div">
+<h1 class="text-wrapper" id="welcome-title">Selamat Datang</h1>
+</div>
+<div class="div">
+<p class="silakan-daftar-untuk">
+Silakan daftar untuk masuk&nbsp;&nbsp;ke akun NutriTumbuh Anda.
+            </p>
+</div>
+</header>
+<form class="form" action="#" method="post">
+<div class="email-field">
+<div class="div">
+<label class="label" for="input-1">Email atau No. Telepon</label>
+</div>
+<div class="div">
+<div class="input">
+<input
+                  class="container-2"
+                  placeholder="contoh@email.com"
+                  type="email"
+                  id="input-1"
+                  name="email"
+                  autocomplete="email"
+                  required
+                  aria-required="true"
+                >
+</div>
+<div class="icon-wrapper" aria-hidden="true">
+<img class="icon" src="img/Email.png" alt="">
+</div>
+</div>
+</div>
+<div class="password-field">
+<div class="label-wrapper">
+<div class="div-wrapper">
+<label class="text-wrapper-2" for="password-input">Kata Sandi</label>
+</div>
+</div>
+<div class="container-3">
+<div class="container-wrapper">
+<div class="container-4">
+<input
+                    class="text-wrapper-3"
+                    id="password-input"
+                    name="password"
+                    type="password"
+                    placeholder="buat kata sandi"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required
+                    aria-required="true"
+                  >
+</div>
+</div>
+<div class="icon-wrapper" aria-hidden="true">
+<img class="img" src="img/Gembok.png" alt="">
+</div>
+<button
+                class="button"
+                type="button"
+                aria-label="Tampilkan kata sandi"
+                aria-controls="password-input"
+                aria-pressed="false"
+              >
+<span class="img-wrapper" aria-hidden="true">
+<img class="icon-2" src="img/Eye.png" alt="">
+</span>
+</button>
+</div>
+</div>
+<fieldset class="container-5">
+<legend class="label-2">
+<span class="text-wrapper-2">Pemilihan Role</span>
+</legend>
+<div class="role-options">
+<button
+                class="orang-tua-option"
+                type="button"
+                name="role"
+                value="orang-tua"
+                aria-pressed="false"
+              >
+<span class="text-wrapper-4">Orang Tua</span>
+</button>
+<button
+                class="posyandu-option"
+                type="button"
+                name="role"
+                value="posyandu"
+                aria-pressed="false"
+              >
+<span class="text-wrapper-5">Posyandu</span>
+</button>
+</div>
+</fieldset>
+<button class="submit-button-button" type="submit">
+<span class="text-wrapper-6">Daftar</span>
+</button>
+<label class="label-3" for="terms">
+<input
+              class="input-2"
+              id="terms"
+              name="terms"
+              type="checkbox"
+              required
+              aria-required="true"
+            >
+<span class="saya-telah-membaca-wrapper">
+<span class="saya-telah-membaca">
+<span class="span">Saya telah membaca dan menyetujui [</span>
+<a class="text-wrapper-7" href="/kebijakan.html">
+Kebijakan Privasi &amp;<br>Syarat Ketentuan
+                </a>
+<span class="span">
+] yang berlaku. Saya memahami bahwa data <br>
+di dalam sistem ini digunakan secara khusus untuk keperluan <br>
+pemantauan gizi anak dan kerahasiaannya akan dijaga.
+                </span>
+</span>
+</span>
+</label>
+</form>
+</div>
+</section>
+</main>
+<script>
+(() => {
+      const passwordInput = document.getElementById("password-input");
+      const toggleButton = document.querySelector(".button");
+
+      toggleButton.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        toggleButton.setAttribute("aria-pressed", String(isPassword));
+        toggleButton.setAttribute(
+          "aria-label",
+          isPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"
+        );
+      });
+
+      const roleButtons = document.querySelectorAll(
+        ".orang-tua-option, .posyandu-option"
+      );
+
+      roleButtons.forEach((roleButton) => {
+        roleButton.addEventListener("click", () => {
+          roleButtons.forEach((button) => {
+            button.setAttribute("aria-pressed", String(button === roleButton));
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Kader - NutriTumbuh</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Panggil CSS -->
+  <link rel="stylesheet" href="/src/globals.css">
+  <link rel="stylesheet" href="/src/db-kader.css">
+</head>
+<body>
+  
+  <!-- NAVIGASI ATAS -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <!-- Logo di kiri -->
+        <img src="/img/NutrisiTumbuh-Logo.png" alt="Logo NutriTumbuh" class="brand-logo">
+      </div>
+      
+      <!-- Navigasi di tengah -->
+      <nav class="nav-links">
+        <a href="#" class="nav-item active">
+          <img src="/img/icon-dashboard.svg" alt="Dashboard"> Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <img src="/img/icon-history.svg" alt="History"> History
+        </a>
+      </nav>
+
+      <!-- Profil di kanan -->
+      <div class="profile">
+        <img src="/img/parent-profile0.png" alt="Profile" class="profile-img">
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA -->
+  <main class="dashboard-content">
+    
+    <!-- Header Dashboard & Pencarian -->
+    <section class="dashboard-header">
+      <div class="header-titles">
+        <h1>Dashboard Kader</h1>
+        <p>Ringkasan data kesehatan balita Posyandu Melati</p>
+      </div>
+      <div class="search-box">
+        <img src="/img/icon-search.svg" alt="Search">
+        <input type="text" placeholder="Cari nama anak atau orang tua...">
+      </div>
+    </section>
+
+    <!-- Grid Ringkasan (4 Kartu) -->
+    <section class="summary-grid">
+      <!-- Diberi border hijau khusus kotak pertama seperti di desain -->
+      <div class="summary-card active-card">
+        <div class="card-top">
+          <span class="card-title">Total Anak</span>
+          <div class="icon-wrapper total"><img src="/img/icon-total.svg" alt=""></div>
+        </div>
+        <div class="card-value">124</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-top">
+          <span class="card-title">Gizi Baik</span>
+          <div class="icon-wrapper baik"><img src="/img/icon-baik.svg" alt=""></div>
+        </div>
+        <div class="card-value">98</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-top">
+          <span class="card-title">Gizi Kurang</span>
+          <div class="icon-wrapper kurang"><img src="/img/icon-kurang.svg" alt=""></div>
+        </div>
+        <div class="card-value">15</div>
+      </div>
+      <div class="summary-card">
+        <div class="card-top">
+          <span class="card-title">Gizi Buruk</span>
+          <div class="icon-wrapper buruk"><img src="/img/icon-buruk.svg" alt=""></div>
+        </div>
+        <div class="card-value">11</div>
+      </div>
+    </section>
+
+    <!-- Area Grafik (Trend Kiri, Donut Kanan) -->
+    <section class="charts-area">
+      
+      <!-- Grafik Trend (KIRI) -->
+      <div class="chart-card trend-chart-card">
+        <div class="trend-header">
+          <div>
+            <h3>Tren Prevalensi Gizi Kurang & Buruk (Jan - Okt 2024)</h3>
+            <p>Pemantauan efektivitas program intervensi pangan desa (PMT & Edukasi MPASI)</p>
+          </div>
+          <div class="badge-green">
+            <img src="/img/icon-trend-down.svg" alt=""> Penurunan Kasus: -38% YTD
+          </div>
+        </div>
+        <div class="trend-graph-placeholder">
+          <!-- Gambar grafik garis dimasukkan ke sini -->
+          <img src="/img/vector-trend.svg" alt="Trend Line" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+      </div>
+
+      <!-- Grafik Donut (KANAN) -->
+      <div class="chart-card donut-chart-card">
+        <h3>Distribusi Gizi</h3>
+        <div class="donut-chart-container">
+          <div class="donut-chart">
+            <div class="donut-inner">
+              <span class="donut-total">124</span>
+              <span class="donut-label">Total</span>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background: #3c9a5f;"></div>
+              <span class="legend-text">Gizi Baik</span>
+              <span class="legend-value">79%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #fdb813;"></div>
+              <span class="legend-text">Gizi Kurang</span>
+              <span class="legend-value">12%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #e53935;"></div>
+              <span class="legend-text">Gizi Buruk</span>
+              <span class="legend-value">9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- Tabel Daftar Balita -->
+    <section class="table-section">
+      <div class="table-header">
+        <div class="table-title-group">
+          <span class="red-dot"></span>
+          <h2>Daftar Balita Perlu Perhatian (Hanya Menampilkan Prioritas)</h2>
+        </div>
+        <a href="#" class="link-action">Buka Seluruh Riwayat Anak <img src="/img/icon-arrow-right-green.svg" alt=""></a>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nama Balita</th>
+              <th>Usia / JK</th>
+              <th>Nama Orang Tua</th>
+              <th>Wilayah Dusun</th>
+              <th>Status & Indikasi</th>
+              <th>Tindakan Cepat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Baris 1 -->
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-green">AD</div>
+                  <strong>Aditya<br>Pratama</strong>
+                </div>
+              </td>
+              <td>18 Bulan<br>(L)</td>
+              <td>Ibu Ratna S.</td>
+              <td>Dusun Kenanga<br>RT 02</td>
+              <td><span class="badge-red">Gizi Buruk</span></td>
+              <td><button class="btn-danger">Rujuk<br>Puskesmas</button></td>
+            </tr>
+            <!-- Baris 2 -->
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-yellow">KL</div>
+                  <strong>Kirana<br>Larasati</strong>
+                </div>
+              </td>
+              <td>24 Bulan<br>(P)</td>
+              <td>Ibu Dewi<br>Wardani</td>
+              <td>Dusun Mawar<br>RT 01</td>
+              <td><span class="badge-red">Gizi Buruk</span></td>
+              <td><button class="btn-danger">Rujuk<br>Puskesmas</button></td>
+            </tr>
+            <!-- Baris 3 -->
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-red">FR</div>
+                  <strong>Fauzan<br>Rahman</strong>
+                </div>
+              </td>
+              <td>11 Bulan<br>(L)</td>
+              <td>Ibu Halimah</td>
+              <td>Dusun Sukamaju<br>RT 04</td>
+              <td><span class="badge-red">Gizi Buruk</span></td>
+              <td><button class="btn-danger">Rujuk<br>Puskesmas</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

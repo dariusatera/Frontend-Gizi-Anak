@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tinjauan Data Kader - NutriTumbuh</title>
+  
+  <!-- 1. TAMBAHKAN 3 BARIS INI UNTUK MENGAMBIL FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Panggil CSS Global dan Khusus -->
+  <link rel="stylesheet" href="/src/globals.css">
+  <link rel="stylesheet" href="/src/review-kader.css">
+</head>
+<body>
+  <div class="kader-page">
+    <div class="kader-card">
+      
+      <!-- HEADER HIJAU -->
+      <div class="kader-header">
+        <img class="logo" src="img/NutrisiTumbuh-Logo.png" alt="Logo NutriTumbuh">
+        <h1 class="title">Informasi Data Diri Kader Posyandu</h1>
+        <p class="subtitle">Tinjau dan Konfirmasi Data Anda</p>
+        
+        <!-- STEPPER (Step 2 Aktif) -->
+        <div class="stepper-container">
+          <div class="stepper-line"></div>
+          <div class="stepper-steps">
+            <div class="step">
+              <!-- Step 1 sekarang selesai / tidak aktif -->
+              <div class="circle">1</div>
+              <div class="step-text">Data Diri<br>Kader</div>
+            </div>
+            <div class="step">
+              <!-- Step 2 sekarang aktif -->
+              <div class="circle active">2</div>
+              <div class="step-text active-text">Tinjauan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY PUTIH DENGAN GARIS HIJAU KIRI -->
+      <div class="review-body">
+        
+        <!-- JUDUL SECTION & TOMBOL UBAH -->
+        <div class="review-section-header">
+          <div class="section-title">
+            <div class="icon-circle">
+              <img src="img/icon-user-dark.png" alt="User">
+            </div>
+            <h2>Data Diri Pengguna / Wali</h2>
+          </div>
+          <a href="/data-kader.html" class="btn-edit">
+            <img src="img/icon-edit.png" alt="Edit"> Ubah Data Diri
+          </a>
+        </div>
+
+        <!-- DAFTAR DATA -->
+        <div class="data-list">
+          <div class="data-row">
+            <span class="data-label">Nama Lengkap</span>
+            <span class="data-value">Siti Khoiriyah</span>
+          </div>
+          <div class="data-row highlight">
+            <span class="data-label">Tanggal Lahir</span>
+            <span class="data-value">14 Maret 1986 (38 Tahun)</span>
+          </div>
+          <div class="data-row highlight">
+            <span class="data-label">Alamat Tinggal</span>
+            <span class="data-value">Jl. Merdeka No. 47, Dusun Sukamaju, RT 02 / RW<br>03, Desa Sejahtera</span>
+          </div>
+        </div>
+
+        <!-- TOMBOL AKSI BAWAH -->
+        <div class="review-action-footer">
+          <a href="/data-kader.html" class="btn-back">
+            <img src="img/icon-arrow-left.png" alt="Kembali"> Kembali
+          </a>
+          <button type="submit" class="btn-submit">
+            Lanjutkan <img src="img/icon-arrow-right.png" alt="Lanjut">
+          </button>
+        </div>
+        
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
