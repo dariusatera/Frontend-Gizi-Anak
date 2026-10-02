@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
+// PERBAIKAN: Gunakan import.meta.dirname (Standar ESM Modern yang didukung Vite/Vercel)
+const __dirname = import.meta.dirname;
+
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -13,6 +16,12 @@ export default defineConfig({
         'db-kader': resolve(__dirname, 'db-kader.html'),
         'riwayat-anak': resolve(__dirname, 'riwayat-anak.html'),
         kebijakan: resolve(__dirname, 'kebijakan.html'),
+        
+
+        'data-ortu': resolve(__dirname, 'data-ortu.html'),
+        'data-dirianak': resolve(__dirname, 'data-dirianak.html'),
+        'data-pertumbuhan': resolve(__dirname, 'data-pertumbuhan.html'),
+        tinjauan: resolve(__dirname, 'tinjauan.html'), // Jika sudah dibuat
       },
     },
   },
