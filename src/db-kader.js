@@ -4,16 +4,16 @@
  */
 
 // ==========================================
-// KONFIGURASI (UBAH DI SINI SAAT INTEGRASI)
+// KONFIGURASI
 // ==========================================
 const CONFIG = {
-  USE_MOCK_DATA: true, // Ubah ke 'false' saat backend sudah siap
-  API_BASE_URL: '/api/dashboard', // Endpoint backend Anda nanti
-  REFRESH_INTERVAL: 300000 // Auto-refresh setiap 5 menit (300000 ms)
+  USE_MOCK_DATA: true,
+  API_BASE_URL: '/api/dashboard',
+  REFRESH_INTERVAL: 300000
 };
 
 // ==========================================
-// MOCK DATA (Untuk Testing Tampilan Tanpa Backend)
+// MOCK DATA
 // ==========================================
 const MOCK_DATA = {
   summary: {
@@ -61,6 +61,17 @@ const MOCK_DATA = {
       status: 'Gizi Kurang',
       statusClass: 'yellow'
     }
+  ],
+  // DATA HISTORY/Riwayat
+  history: [
+    { id: 1, nama: 'Siti Aminah', usia: 18, tanggal: '12 Okt 2023', status: 'Gizi Kurang', statusClass: 'gizi-kurang' },
+    { id: 2, nama: 'Aditya Pratama', usia: 18, tanggal: '12 Okt 2023', status: 'Gizi Buruk', statusClass: 'gizi-buruk' },
+    { id: 3, nama: 'Dewi Lestari', usia: 12, tanggal: '12 Okt 2023', status: 'Gizi Baik', statusClass: 'gizi-baik' },
+    { id: 4, nama: 'Kirana Larasati', usia: 24, tanggal: '12 Okt 2023', status: 'Gizi Buruk', statusClass: 'gizi-buruk' },
+    { id: 5, nama: 'Siti Amanah', usia: 24, tanggal: '12 Okt 2023', status: 'Gizi Kurang', statusClass: 'gizi-kurang' },
+    { id: 6, nama: 'Fauzan Rahman', usia: 11, tanggal: '12 Okt 2023', status: 'Gizi Buruk', statusClass: 'gizi-buruk' },
+    { id: 7, nama: 'Dewi Kartika', usia: 12, tanggal: '12 Okt 2023', status: 'Gizi Baik', statusClass: 'gizi-baik' },
+    { id: 8, nama: 'Budi Santoso', usia: 11, tanggal: '12 Okt 2023', status: 'Gizi Buruk', statusClass: 'gizi-buruk' }
   ]
 };
 
@@ -84,6 +95,63 @@ class DashboardAPI {
     if (CONFIG.USE_MOCK_DATA) return MOCK_DATA.children;
     const res = await fetch(`${CONFIG.API_BASE_URL}/children/priority`);
     return res.json();
+  }
+
+  async getHistoryData() {
+    if (CONFIG.USE_MOCK_DATA) return MOCK_DATA.history;
+    const res = await fetch(`${CONFIG.API_BASE_URL}/history`);
+    return res.json();
+  }
+}
+
+// ==========================================
+// NAVIGATION CONTROLLER
+// ==========================================
+class NavigationController {
+  constructor() {
+    this.navItems = document.querySelectorAll('.nav-item');
+    this.pages = {
+      dashboard: document.getElementById('dashboard-page'),
+      history: document.getElementById('history-page')
+    };
+    this.init();
+  }
+
+  init() {
+    this.navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const pageName = item.getAttribute('data-page');
+        this.switchPage(pageName);
+      });
+    });
+  }
+
+  switchPage(pageName) {
+    // Update active nav item
+    this.navItems.forEach(item => {
+      if (item.getAttribute('data-page') === pageName) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Show/hide pages
+    Object.keys(this.pages).forEach(key => {
+      if (key === pageName) {
+        this.pages[key].classList.add('active');
+      } else {
+        this.pages[key].classList.remove('active');
+      }
+    });
+
+    // Update title berdasarkan halaman
+    if (pageName === 'history') {
+      document.title = 'Riwayat Data - NutriTumbuh';
+    } else {
+      document.title = 'Dashboard Kader - NutriTumbuh';
+    }
   }
 }
 
@@ -307,13 +375,84 @@ class DashboardController {
 }
 
 // ==========================================
+// HISTORY CONTROLLER
+// ==========================================
+class HistoryController {
+  constructor() {
+    this.api = new DashboardAPI();
+    this.historyData = [];
+  }
+
+  async init() {
+    try {
+      this.historyData = await this.api.getHistoryData();
+      this.renderHistoryTable(this.historyData);
+    } catch (error) {
+      console.error('Gagal memuat data history:', error);
+    }
+  }
+
+  renderHistoryTable(data) {
+    const tbody = document.getElementById('history-table-body');
+    
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">Tidak ada data riwayat</td></tr>';
+      return;
+    }
+
+    const rows = data.map(item => `
+      <tr>
+        <td><strong>${item.nama}</strong></td>
+        <td>${item.usia}</td>
+        <td>${item.tanggal}</td>
+        <td><span class="status-badge ${item.statusClass}">${item.status}</span></td>
+        <td>
+          <div class="action-eye" onclick="historyController.viewDetail(${item.id})" title="Lihat Detail">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.innerHTML = rows;
+  }
+
+  viewDetail(id) {
+    const item = this.historyData.find(h => h.id === id);
+    if (item) {
+      alert(`Detail ${item.nama}:\nUsia: ${item.usia} bulan\nStatus: ${item.status}\nTanggal: ${item.tanggal}`);
+    }
+  }
+
+  filterHistory(keyword) {
+    const filtered = this.historyData.filter(item => 
+      item.nama.toLowerCase().includes(keyword.toLowerCase())
+    );
+    this.renderHistoryTable(filtered);
+  }
+}
+
+// ==========================================
 // INISIALISASI
 // ==========================================
 let dashboard;
+let historyController;
+let navigation;
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize navigation
+  navigation = new NavigationController();
+  
+  // Initialize dashboard
   dashboard = new DashboardController();
   
+  // Initialize history
+  historyController = new HistoryController();
+  historyController.init();
+  
+  // Search functionality for dashboard
   const searchInput = document.getElementById('search-input');
   if (searchInput && CONFIG.USE_MOCK_DATA) {
     searchInput.addEventListener('input', (e) => {
@@ -325,8 +464,18 @@ document.addEventListener('DOMContentLoaded', () => {
       dashboard.updateTable(filtered);
     });
   }
+
+  // Search functionality for history
+  const historySearchInput = document.getElementById('history-search-input');
+  if (historySearchInput) {
+    historySearchInput.addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase();
+      historyController.filterHistory(keyword);
+    });
+  }
 });
 
+// Auto refresh
 setInterval(() => {
   if (dashboard && !CONFIG.USE_MOCK_DATA) {
     dashboard.refresh();

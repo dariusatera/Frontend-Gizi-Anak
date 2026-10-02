@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seluruh Riwayat Anak - NutriTumbuh</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/src/globals.css">
+  <link rel="stylesheet" href="/src/perhatian-kader.css">
+</head>
+<body>
+  
+  <div class="riwayat-page">
+    
+    <!-- TOMBOL KEMBALI -->
+    <div class="back-button-container">
+      <a href="/db-kader.html" class="btn-kembali">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Kembali
+      </a>
+    </div>
+
+    <!-- KONTEN UTAMA -->
+    <main class="riwayat-content">
+      
+      <!-- HEADER TABEL -->
+      <div class="riwayat-header">
+        <div class="header-title-group">
+          <span class="red-dot"></span>
+          <h1>Daftar Balita Perlu Perhatian</h1>
+        </div>
+      </div>
+
+      <!-- TABEL DATA BALITA -->
+      <div class="table-container">
+        <table class="riwayat-table">
+          <thead>
+            <tr>
+              <th>Nama Balita</th>
+              <th>Usia / JK</th>
+              <th>Nama Orang Tua</th>
+              <th>Wilayah Dusun</th>
+              <th>Status & Indikasi</th>
+              <th>Tindakan Cepat</th>
+            </tr>
+          </thead>
+          <tbody id="riwayat-table-body">
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="/src/perhatian-kader.js"></script>
+</body>
+</html>
