@@ -62,7 +62,6 @@ const MOCK_DATA = {
       statusClass: 'yellow'
     }
   ],
-  // DATA HISTORY/Riwayat
   history: [
     { id: 1, nama: 'Siti Aminah', usia: 18, tanggal: '12 Okt 2023', status: 'Gizi Kurang', statusClass: 'gizi-kurang' },
     { id: 2, nama: 'Aditya Pratama', usia: 18, tanggal: '12 Okt 2023', status: 'Gizi Buruk', statusClass: 'gizi-buruk' },
@@ -128,7 +127,6 @@ class NavigationController {
   }
 
   switchPage(pageName) {
-    // Update active nav item
     this.navItems.forEach(item => {
       if (item.getAttribute('data-page') === pageName) {
         item.classList.add('active');
@@ -137,7 +135,6 @@ class NavigationController {
       }
     });
 
-    // Show/hide pages
     Object.keys(this.pages).forEach(key => {
       if (key === pageName) {
         this.pages[key].classList.add('active');
@@ -146,7 +143,6 @@ class NavigationController {
       }
     });
 
-    // Update title berdasarkan halaman
     if (pageName === 'history') {
       document.title = 'Riwayat Data - NutriTumbuh';
     } else {
@@ -291,6 +287,7 @@ class DashboardController {
     document.getElementById('chart-legend').innerHTML = legendHTML;
   }
 
+  // ✅ PERBAIKAN: Menggunakan Event Listener, BUKAN inline onclick (agar terbaca di module)
   updateTable(children) {
     const tbody = document.getElementById('table-body');
     
@@ -300,13 +297,13 @@ class DashboardController {
     }
 
     const rows = children.map(child => `
-      <tr>
+      <tr class="clickable-row" data-id="${child.id}" data-nama="${child.nama}" style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f0fdf4'" onmouseout="this.style.backgroundColor='transparent'">
         <td>
           <div class="user-cell">
             <div class="avatar-${this.getStatusColor(child.status)}">
               ${child.initials}
             </div>
-            <strong>${child.nama}</strong>
+            <strong style="color: #006a38;">${child.nama}</strong>
           </div>
         </td>
         <td>${child.usia} Bulan<br><span style="color:#64748b">(${child.jenisKelamin})</span></td>
@@ -314,7 +311,7 @@ class DashboardController {
         <td>${child.wilayah}</td>
         <td><span class="badge-status ${child.statusClass}">${child.status}</span></td>
         <td>
-          <button class="btn-danger" onclick="dashboard.handleRujuk('${child.id}', '${child.nama}')">
+          <button class="btn-danger" data-action="rujuk" data-id="${child.id}" data-nama="${child.nama}">
             Rujuk<br>Puskesmas
           </button>
         </td>
@@ -322,6 +319,28 @@ class DashboardController {
     `).join('');
 
     tbody.innerHTML = rows;
+
+    // ✅ Pasang Event Listener ke setiap baris setelah di-render
+    tbody.querySelectorAll('.clickable-row').forEach(row => {
+      row.addEventListener('click', (e) => {
+        // Jika yang diklik adalah tombol Rujuk, abaikan klik baris
+        if (e.target.closest('.btn-danger')) return;
+        
+        const childId = row.getAttribute('data-id');
+        const childName = row.getAttribute('data-nama');
+        this.viewDetail(childId, childName);
+      });
+    });
+
+    // ✅ Pasang Event Listener khusus untuk tombol Rujuk
+    tbody.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Mencegah event naik ke baris
+        const childId = btn.getAttribute('data-id');
+        const childName = btn.getAttribute('data-nama');
+        this.handleRujuk(childId, childName);
+      });
+    });
   }
 
   getStatusColor(status) {
@@ -363,6 +382,27 @@ class DashboardController {
     }
   }
 
+  viewDetail(childId, childName) {
+    const child = MOCK_DATA.children.find(c => c.id === childId);
+    
+    if (child) {
+      sessionStorage.setItem('selectedAnakKader', JSON.stringify({
+        id: child.id,
+        nama: child.nama,
+        initials: child.initials,
+        usia: child.usia,
+        jenisKelamin: child.jenisKelamin,
+        namaOrangTua: child.namaOrangTua,
+        wilayah: child.wilayah,
+        status: child.status,
+        bb: 10.5,
+        tb: 75
+      }));
+      
+      window.location.href = `/riwayat-kader.html?id=${childId}`;
+    }
+  }
+
   showError(message) {
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: #e53935;">${message}</td></tr>`;
@@ -392,6 +432,7 @@ class HistoryController {
     }
   }
 
+  // ✅ PERBAIKAN: Menggunakan Event Listener, BUKAN inline onclick
   renderHistoryTable(data) {
     const tbody = document.getElementById('history-table-body');
     
@@ -401,28 +442,38 @@ class HistoryController {
     }
 
     const rows = data.map(item => `
-      <tr>
-        <td><strong>${item.nama}</strong></td>
+      <tr class="clickable-history-row" data-id="${item.id}" style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f0fdf4'" onmouseout="this.style.backgroundColor='transparent'">
+        <td><strong style="color: #006a38;">${item.nama}</strong></td>
         <td>${item.usia}</td>
         <td>${item.tanggal}</td>
         <td><span class="status-badge ${item.statusClass}">${item.status}</span></td>
-        <td>
-          <div class="action-eye" onclick="historyController.viewDetail(${item.id})" title="Lihat Detail">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-            </svg>
-          </div>
-        </td>
+        <td><span style="color: #006a38; font-weight: 600;">Lihat Detail →</span></td>
       </tr>
     `).join('');
 
     tbody.innerHTML = rows;
+
+    // ✅ Pasang Event Listener ke setiap baris history setelah di-render
+    tbody.querySelectorAll('.clickable-history-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const id = parseInt(row.getAttribute('data-id'));
+        this.viewDetail(id);
+      });
+    });
   }
 
   viewDetail(id) {
     const item = this.historyData.find(h => h.id === id);
     if (item) {
-      alert(`Detail ${item.nama}:\nUsia: ${item.usia} bulan\nStatus: ${item.status}\nTanggal: ${item.tanggal}`);
+      sessionStorage.setItem('selectedAnakKader', JSON.stringify({ 
+        id: `child_00${item.id}`, 
+        nama: item.nama, 
+        usia: item.usia, 
+        status: item.status, 
+        bb: 10.5, 
+        tb: 75 
+      }));
+      window.location.href = `/riwayat-kader.html?id=child_00${item.id}`;
     }
   }
 
@@ -442,17 +493,11 @@ let historyController;
 let navigation;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize navigation
   navigation = new NavigationController();
-  
-  // Initialize dashboard
   dashboard = new DashboardController();
-  
-  // Initialize history
   historyController = new HistoryController();
   historyController.init();
   
-  // Search functionality for dashboard
   const searchInput = document.getElementById('search-input');
   if (searchInput && CONFIG.USE_MOCK_DATA) {
     searchInput.addEventListener('input', (e) => {
@@ -465,7 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Search functionality for history
   const historySearchInput = document.getElementById('history-search-input');
   if (historySearchInput) {
     historySearchInput.addEventListener('input', (e) => {
@@ -475,7 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Auto refresh
 setInterval(() => {
   if (dashboard && !CONFIG.USE_MOCK_DATA) {
     dashboard.refresh();

@@ -1,19 +1,19 @@
 /* =========================================================
-   CSS DASHBOARD KADER (SPACING DIPERBAIKI)
+   CSS DASHBOARD KADER (KONSISTEN #E8F5E9)
    ========================================================= */
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
-  background-color: #f0f5ed;
+  background-color: #E8F5E9; /* ✅ DIPERBAIKI: Konsisten #E8F5E9 */
   min-height: 100vh;
   font-family: "Plus Jakarta Sans", "Poppins", sans-serif;
 }
 
 /* --- NAVBAR --- */
 .navbar {
-  background: rgba(246, 251, 243, 0.9);
+  background: rgba(232, 245, 233, 0.9); /* ✅ DIPERBAIKI: RGBA dari #E8F5E9 */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(6px);
   position: sticky;
@@ -259,7 +259,7 @@ body {
 
 .summary-card.active-card {
   border: 2px solid #006a38;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f5ed 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #E8F5E9 100%); /* ✅ DIPERBAIKI */
 }
 
 .summary-card.active-card::before {
@@ -296,11 +296,11 @@ body {
 }
 
 .icon-wrapper.total { 
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  background: linear-gradient(135deg, #E8F5E9 0%, #c8e6c9 100%); /* ✅ DIPERBAIKI (Kapital) */
 }
 
 .icon-wrapper.baik { 
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  background: linear-gradient(135deg, #E8F5E9 0%, #c8e6c9 100%); /* ✅ DIPERBAIKI (Kapital) */
 }
 
 .icon-wrapper.kurang { 
@@ -605,7 +605,7 @@ body {
 }
 
 .data-table th {
-  background: #f0f5ed;
+  background: #E8F5E9; /* ✅ DIPERBAIKI: Konsisten #E8F5E9 */
   color: #3f4940;
   font-size: 12px;
   padding: 16px;
@@ -734,7 +734,7 @@ body {
 }
 
 .history-table tbody tr:hover {
-  background-color: #f0f5ed;
+  background-color: #E8F5E9; /* ✅ DIPERBAIKI: Konsisten #E8F5E9 */
 }
 
 .status-badge {
@@ -817,4 +817,39 @@ body {
     padding: 12px 8px;
     font-size: 12px;
   }
+}
+
+.btn-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover {
+  background: #E8F5E9;
+}
+
+.btn-action-icon {
+  font-size: 20px;
+}
+
+/* Efek Hover pada Baris Tabel agar User tahu bisa diklik */
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f0fdf4 !important; 
+}
+
+
+.btn-danger, .btn-rujuk {
+  position: relative;
+  z-index: 2;
 }

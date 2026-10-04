@@ -280,3 +280,38 @@ body {
     font-size: 11px;
   }
 }
+
+.btn-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover {
+  background: #E8F5E9;
+}
+
+.btn-action-icon {
+  font-size: 20px;
+}
+
+/* Efek Hover pada Baris Tabel agar User tahu bisa diklik */
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f0fdf4 !important; 
+}
+
+
+.btn-danger, .btn-rujuk {
+  position: relative;
+  z-index: 2;
+}   

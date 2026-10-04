@@ -1,6 +1,6 @@
 /**
- * Riwayat Anak - Data Controller
- * File: riwayat-anak.js
+ * Perhatian Kader - Data Controller
+ * File: perhatian-kader.js
  */
 
 // ==========================================
@@ -11,7 +11,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_001',
     nama: 'Aditya Pratama',
     initials: 'AD',
-    avatarColor: 'green',
+    avatarColor: 'red',
     usia: 18,
     jenisKelamin: 'L',
     namaOrangTua: 'Ibu Ratna S.',
@@ -23,7 +23,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_002',
     nama: 'Kirana Larasati',
     initials: 'KL',
-    avatarColor: 'yellow',
+    avatarColor: 'red',
     usia: 24,
     jenisKelamin: 'P',
     namaOrangTua: 'Ibu Dewi Wardani',
@@ -47,7 +47,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_004',
     nama: 'Budi Prabudi',
     initials: 'BP',
-    avatarColor: 'yellow',
+    avatarColor: 'red',
     usia: 36,
     jenisKelamin: 'L',
     namaOrangTua: 'Ibu Rahmawati',
@@ -59,7 +59,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_005',
     nama: 'Daniel Steven',
     initials: 'DS',
-    avatarColor: 'green',
+    avatarColor: 'red',
     usia: 48,
     jenisKelamin: 'L',
     namaOrangTua: 'Ibu Christie',
@@ -83,7 +83,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_007',
     nama: 'Dony Kamtoro',
     initials: 'DK',
-    avatarColor: 'yellow',
+    avatarColor: 'red',
     usia: 20,
     jenisKelamin: 'L',
     namaOrangTua: 'Ibu Siti',
@@ -95,7 +95,7 @@ const MOCK_RIWAYAT_DATA = [
     id: 'child_008',
     nama: 'Siti Aminah',
     initials: 'SA',
-    avatarColor: 'green',
+    avatarColor: 'yellow',
     usia: 18,
     jenisKelamin: 'P',
     namaOrangTua: 'Ibu Fatimah',
@@ -135,27 +135,31 @@ const MOCK_RIWAYAT_DATA = [
 function renderTable(data) {
   const tbody = document.getElementById('riwayat-table-body');
   
+  if (!tbody) return; // Safety check jika elemen belum ada
+
   if (!data || data.length === 0) {
     tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">Tidak ada data balita</td></tr>';
     return;
   }
 
+  // ✅ PERBAIKAN: BARIS TABEL SEKARANG BISA DIKLIK LANGSUNG
   const rows = data.map(child => `
-    <tr>
+    <tr onclick="viewDetailAnak('${child.id}', '${child.nama}')" style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f0fdf4'" onmouseout="this.style.backgroundColor='transparent'">
       <td>
         <div class="user-cell">
           <div class="user-avatar ${child.avatarColor}">${child.initials}</div>
-          <span class="user-name">${child.nama}</span>
+          <span class="user-name" style="color: #006a38; font-weight: 600;">${child.nama}</span>
         </div>
       </td>
-      <td>${child.usia} Bulan<br>(${child.jenisKelamin})</td>
+      <td>${child.usia} Bulan<br><span style="color:#64748b">(${child.jenisKelamin})</span></td>
       <td>${child.namaOrangTua}</td>
       <td>${child.wilayah}</td>
       <td>
         <span class="badge-status ${child.statusClass}">${child.status}</span>
       </td>
       <td>
-        <button class="btn-rujuk" onclick="handleRujuk('${child.id}', '${child.nama}')">
+        <!-- event.stopPropagation() MENCEGAH TOMBOL INI MEMICU KLIK BARIS -->
+        <button class="btn-rujuk" onclick="event.stopPropagation(); handleRujuk('${child.id}', '${child.nama}')">
           Rujuk<br>Puskesmas
         </button>
       </td>
@@ -163,6 +167,30 @@ function renderTable(data) {
   `).join('');
 
   tbody.innerHTML = rows;
+}
+
+// ==========================================
+// VIEW DETAIL ANAK (Menuju ke riwayat-kader.html)
+// ==========================================
+function viewDetailAnak(childId, childName) {
+  const child = MOCK_RIWAYAT_DATA.find(c => c.id === childId);
+  
+  if (child) {
+    sessionStorage.setItem('selectedAnakKader', JSON.stringify({
+      id: child.id,
+      nama: child.nama,
+      initials: child.initials,
+      usia: child.usia,
+      jenisKelamin: child.jenisKelamin,
+      namaOrangTua: child.namaOrangTua,
+      wilayah: child.wilayah,
+      status: child.status,
+      bb: 10.5,
+      tb: 75
+    }));
+    
+    window.location.href = `/riwayat-kader.html?id=${childId}`;
+  }
 }
 
 // ==========================================
@@ -175,8 +203,29 @@ function handleRujuk(childId, childName) {
 }
 
 // ==========================================
+// SEARCH FUNCTIONALITY
+// ==========================================
+function filterTable(keyword) {
+  const filtered = MOCK_RIWAYAT_DATA.filter(child => 
+    child.nama.toLowerCase().includes(keyword.toLowerCase()) ||
+    child.namaOrangTua.toLowerCase().includes(keyword.toLowerCase()) ||
+    child.wilayah.toLowerCase().includes(keyword.toLowerCase())
+  );
+  renderTable(filtered);
+}
+
+// ==========================================
 // INISIALISASI
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Render tabel awal
   renderTable(MOCK_RIWAYAT_DATA);
+
+  // Tambahkan event listener untuk search jika elemen input ada di HTML
+  const searchInput = document.getElementById('perhatian-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      filterTable(e.target.value);
+    });
+  }
 });
